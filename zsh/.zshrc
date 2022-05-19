@@ -5,7 +5,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/yangshiqu/.oh-my-zsh"
+export ZSH="/Users/y/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -150,7 +150,7 @@ alias python3='/usr/local/Cellar/python@3.7/3.7.13/Frameworks/Python.framework/V
 
 # 新vim路径
 # alias vim='/usr/local/Cellar/vim/8.2.2650/bin/vim'
-# alias v5='/Users/yangshiqu/Downloads/nvim-osx64/bin/nvim'
+# alias v5='/Users/y/Downloads/nvim-osx64/bin/nvim'
 alias v='/usr/local/Cellar/neovim/0.7.0/bin/nvim'
 alias vd='nvim -d'
 
