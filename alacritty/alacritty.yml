@@ -52,3 +52,29 @@ scrolling:
   # 自动滚动至最新行
   auto_scroll: true
 
+# 颜色配置
+colors: 
+  cursor: 
+    text: '0x000000'
+    cursor: '0x00ff00'
+
+# 光标配置
+cursor:  
+  # 光标样式
+  style:
+    # 光标形状
+    #
+    # 可以为下面的值:
+    #   - ▇ Block
+    #   - _ Underline
+    #   - | Beam
+    shape: Block
+
+    # 光标闪烁状态
+    #
+    # 可以为下面的值:
+    #   - Never: Prevent the cursor from ever blinking
+    #   - Off: Disable blinking by default
+    #   - On: Enable blinking by default
+    #   - Always: Force the cursor to always blink
+    blinking: Off
