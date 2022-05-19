@@ -53,6 +53,18 @@ tmux 快捷键简介：
 \* | ⌃ + hjkl | 光标焦点移动
 \* | prifix + c | 新建页面
 \* | prifix + n/p | 光标向下/向上窗口移动
+\* | prifix + 1/2/3| 切屏到指定位置
 \* | prifix + x | 关闭当前窗口
 \* | prifix + z | 最大化/关闭最大化当前窗口
 \* | prifix + -/\| | 窗口向右/下分割
+\* | prifix + , | 重命名页面
+|  | prifix + }/{ | 与下一个/上一个窗格交换位置
+|  | prifix + ! | 将当前窗格置于新窗口
+\* | prifix + (⌃ + s) | 保存当前tmux下的所有页面
+\* | prifix + (⌃ + r) | 恢复之前保存的tmux下的所有页面及状态
+|  | prifix + r| 刷新tmuxconf文件新增内容
+\* | prifix + \[ | 进入copy状态，可以通过vim模式的操作复制tmux下的内容，如v+y复制内容
+\* | prifix + \] | 将copy状态下复制的内容粘贴到命令行中
+\* | prifix + \\ | 插件功能，用于打开tmux下的功能列表
+\* | prifix + < | 插件功能，用于打开tmux下的功能列表
+\* | prifix + > | 插件功能，用于打开tmux下的功能列表
