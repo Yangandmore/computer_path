@@ -12,12 +12,14 @@
 * command：主要完成uTool的软件控制。
 
 终端展示效果图：
-<img width="1680" alt="image" src="https://user-images.githubusercontent.com/16630631/169189750-5def2418-620b-497e-8a8d-b2eaf8831f2c.png">
+<img width="1680" alt="image" src="https://user-images.githubusercontent.com/16630631/169191183-c6ff5497-d41b-430c-be16-f55a712dd1e7.png">
 
 终端nvim展示效果图：
-<img width="1680" alt="image" src="https://user-images.githubusercontent.com/16630631/169189898-ec9c3cdd-64a6-489d-948b-e946377f4757.png">
+<img width="1680" alt="image" src="https://user-images.githubusercontent.com/16630631/169191149-20da2abb-7b45-4da0-a26e-1f6fceef2128.png">
 
 快捷键简介：
    快捷键  | 效果
  --------:|:-----
  ⌘ + 1/2/3| 切屏到指定位置
+ ⌘ + n/p  | 向下/上一个屏幕切换
+ 
