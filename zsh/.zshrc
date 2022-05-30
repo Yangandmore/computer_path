@@ -174,8 +174,19 @@ alias j='z'
 # ranger 文件管理
 alias f='ranger'
 
+# --------- proxy -------
+alias openproxy='export http_proxy=http://127.0.0.1:1087 && export https_proxy=http://127.0.0.1:1087'
+alias closeproxy='unset http_proxy && unset https_proxy'
+
 source $ZSH/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.bash_profile
+
+# 配色同步
+# if [[ $TMUX != "" ]] then
+#     export TERM="tmux-256color"
+# else
+#     export TERM="xterm-256color"
+# fi
 
 # Fig post block. Keep at the bottom of this file.
 # # 打开命令行后显示电脑信息
