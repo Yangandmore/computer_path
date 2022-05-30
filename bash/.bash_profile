@@ -44,8 +44,8 @@ export PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
 # export TERM=screen-256color
 
 # ------------------------------------------------------------------  网络环境  ----------------------------------------------#
-export http_proxy="http://127.0.0.1:1087"
-export https_proxy="http://127.0.0.1:1087"
+# export http_proxy="http://127.0.0.1:1087"
+# export https_proxy="http://127.0.0.1:1087"
 
 # ------------------------------------------------------------------  conda环境  ----------------------------------------------#
 # added by Anaconda3 5.3.1 installer
