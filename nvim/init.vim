@@ -8,47 +8,30 @@
 " F2: 文件树焦点
 " F3: 文件反向寻找文件树
 " F4: tarbar树
-" F5: 文件git状态
+" F5: 
 " F6: 文件历史操作记录
 " F7: 文件git操作记录
 " F8: 下侧zsh弹框
-" F9: 进入声明
-" F10:修改名称
+" F9: 
+" F10:
 " F11:--不可使用--
-" F12:eslint保存
+" F12:
 
 " --------------------------按键层
 " t: 进入跳转输入
 " C-n: 根据选择数据向下多光标寻找
-" C-m: 根据当前光标垂直向下寻找
-" C-z: 根据当前光笔垂直向上寻找
+" C-z: 根据当前光标垂直向下寻找
+" C-x: 根据当前光笔垂直向上寻找
 "
-" mn: 向下寻找git未提交操作
-" mp: 向上寻找git未提交操作
-"
+" mn: 向下寻找标记
+" mp: 向上寻找标记
 " m+其他: 比较该行为其他
 " mm: 标记该行
 " ml: 标记列表
 " md: 删除所有标记
 "
-" [p 上一个粘贴记录
-" ]p 下一个粘贴记录
-
-
 " --------------------------leader层
-" gs: git status
-" ga: git add
-" gcm: git commit
-" gd: git diff
-" gi: git init
-" gcl: git clone
-" gpl: git pull
-" ggp: git push
-" gl: git log
-" gb: git blame
-" grm: git rm
-" gmv: git rm
-" ff: fzf files
+" ff: files
 " rg: fzf rg
 " BL: fzf buffers
 " fl: fzf lines
@@ -61,7 +44,6 @@
     " |- v/s 向右/向下分割
     " |- w 切换焦点
     " |- n/p <tab> 切换buf
-" p: 粘贴板记录
 "
 
 
@@ -132,10 +114,6 @@ set t_Co=256
 set cmdheight=2
 " 真彩色
 set termguicolors
-" if &term =~# '^screen'
-"     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-" endif
 
 " 屏幕顶部底部总是保留5行
 set scrolloff=3
@@ -145,8 +123,11 @@ set noshowmode
 " 行号 行高亮 始终显示标记列
 set nu
 " set cul
-set signcolumn=yes:2
-set relativenumber              " 相对行号
+" set signcolumn=yes:2
+set signcolumn=auto
+" set relativenumber              " 相对行号
+set cursorline                    "高亮当前行
+" set cursorcolumn                  " 高亮当前列
 
 " 总是开启 statusline & tabline
 set laststatus=2
@@ -205,25 +186,22 @@ set nocompatible
 call plug#begin('~/.config/nvim/plugged')
 
 " 主题
-Plug 'morhetz/gruvbox'
-let g:gruvbox_transparent_bg = 1
-let g:gruvbox_contrast_dark='hard'
-let g:gruvbox_sign_column='bg0'
-colorscheme gruvbox
-
-" Plug 'morhetz/gruvbox'
-" let g:gruvbox_contrast_dark="medium"
-" let g:gruvbox_transparent_bg = 1
-" let g:gruvbox_italic = 1
-" let g:gruvbox_number_column = 'bg1'
-" let g:gruvbox_sign_column = 'bg1'
-" colorscheme gruvbox
-
-Plug 'nanotech/jellybeans.vim'
-" colorscheme jellybeans
-
-Plug 'sainnhe/edge'
-" colorscheme edge
+Plug 'sainnhe/gruvbox-material'
+let g:gruvbox_material_palette='material'
+let g:gruvbox_material_background = 'hard'
+let g:gruvbox_material_better_performance = 1
+" 标识栏背景色
+let g:gruvbox_material_sign_column_background='bg0'
+let g:gruvbox_material_enable_italic = 1
+" 注释中禁用斜体
+let g:gruvbox_material_disable_italic_comment=1
+" 启用函粗体
+let g:gruvbox_material_enable_bold=1
+" 选中反向颜色
+let g:gruvbox_material_visual='reverse'
+" 高亮对比
+let g:gruvbox_material_ui_contrast='high'
+colorscheme gruvbox-material
 
 Plug 'nlknguyen/papercolor-theme'
 " let g:PaperColor_Theme_Options = {
@@ -239,11 +217,6 @@ Plug 'nlknguyen/papercolor-theme'
 
 " 必须在此配置左侧标记列颜色，否则会被覆盖
 " highlight SignColumn guibg=#4B4B4B
-
-" Plug 'mhartington/oceanic-next'
-" let g:oceanic_next_terminal_bold = 1
-" let g:oceanic_next_terminal_italic = 1
-" colorscheme OceanicNext
 
 " NERDTree
 Plug 'scrooloose/nerdtree'
@@ -266,8 +239,6 @@ map <F3> :NERDTreeFind<CR>
 " 当只有一个窗口时关闭后绑定nerdtree一起关闭
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif
-" 每个选项卡上自动具有相同的NERDTree
-autocmd BufWinEnter * silent NERDTreeMirror
 " 防止其他缓冲区替换其窗口中的NERDTree
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
     \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
@@ -307,34 +278,19 @@ Plug 'vim-airline/vim-airline'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:airline_section_a = ''
+" git版本
 let g:airline_section_b = '🅱️  %{gitbranch#name()}'
-let g:airline_section_c = '  %{noscrollbar#statusline(10,"□","◼")} %f'
+" 滑动框
+let g:airline_section_c = '  ◄%{noscrollbar#statusline(10,"□","◼")}► %f'
 let g:airline_section_x = ''
-let g:airline_section_z = ''
+" coc状态
+let g:airline_section_z = '%{coc#status()}%{get(b:,"coc_current_function","")}'
 let g:airline_section_error = ''
 let g:airline_section_warning = ''
 Plug 'vim-airline/vim-airline-themes'
 let g:airline_theme='bubblegum'
 
-" tmux
-" Plug 'edkolev/tmuxline.vim'
-" " 配置tmux显示位置
-" " 整体样式 #(whoami)
-" let g:tmuxline_preset = {
-"       \'a'    : '#W',
-"       \'c'    : '',
-"       \'win'  : ['#I', '#W'],
-"       \'cwin' : ['✏️ '],
-" 			\'x'    : '保佑代码无 Bug !',
-"       \'z'    : ['今天是', '%R', '%d', '%a']}
-" " 排序样式
-" let g:tmuxline_powerline_separators = 0
-" let g:tmuxline_separators = {
-"     \ 'left' : '',
-"     \ 'left_alt': '',
-"     \ 'right' : '',
-"     \ 'right_alt' : '',
-"     \ 'space' : ' '}
+" tmux、vim下的C-hjkl跳转
 Plug 'christoomey/vim-tmux-navigator'
 
 " Git差异显示
@@ -344,45 +300,28 @@ Plug 'christoomey/vim-tmux-navigator'
 " <Leader> hu 撤销
 " ]c 跳转下一个修改区
 " [c 跳转上一个修改区
-Plug 'airblade/vim-gitgutter'
-map <F5> :GitGutterToggle<CR>
-" 如果要关闭消
-let g:gitgutter_show_msg_on_hunk_jumping = 0
-" 默认关闭
-let g:gitgutter_enabled = 0
-let g:gitgutter_sign_added = '▌'
-let g:gitgutter_sign_modified = '▌'
-let g:gitgutter_sign_removed = '▌'
-let g:gitgutter_sign_removed_first_line = '▌'
-let g:gitgutter_sign_removed_above_and_below = '▌'
-let g:gitgutter_sign_modified_removed = '▌'
-" 更新时间
-let g:gitgutter_max_signs = -1
-highlight GitGutterAdd    guifg=#A1D174 ctermfg=40
-highlight GitGutterChange guifg=#C5C5C5 ctermfg=30
-highlight GitGutterDelete guifg=#FC419F ctermfg=9
-" 启用窗口显示git差异
-let g:gitgutter_preview_win_floating = 1
-let g:gitgutter_use_location_list = 2
-let g:gitgutter_async = 0
+" Plug 'airblade/vim-gitgutter'
+" map <F5> :GitGutterToggle<CR>
+" " 如果要关闭消
+" let g:gitgutter_show_msg_on_hunk_jumping = 0
+" " 默认关闭
+" let g:gitgutter_enabled = 0
+" let g:gitgutter_sign_added = '▌'
+" let g:gitgutter_sign_modified = '▌'
+" let g:gitgutter_sign_removed = '▌'
+" let g:gitgutter_sign_removed_first_line = '▌'
+" let g:gitgutter_sign_removed_above_and_below = '▌'
+" let g:gitgutter_sign_modified_removed = '▌'
+" " 更新时间
+" let g:gitgutter_max_signs = -1
+" highlight GitGutterAdd    guifg=#A1D174 ctermfg=40
+" highlight GitGutterChange guifg=#C5C5C5 ctermfg=30
+" highlight GitGutterDelete guifg=#FC419F ctermfg=9
+" " 启用窗口显示git差异
+" let g:gitgutter_preview_win_floating = 1
+" let g:gitgutter_use_location_list = 2
+" let g:gitgutter_async = 0
 
-" 完成git操作
-" :Git
-" Plug 'tpope/vim-fugitive'
-" nnoremap <leader>gs  :Git status<CR>
-" nnoremap <leader>ga  :Git add 
-" nnoremap <leader>gcm :Git commit 
-" nnoremap <leader>gd  :Git diff 
-" nnoremap <leader>gi  :Git init<CR>
-" nnoremap <leader>gcl :Git clone 
-" nnoremap <leader>gpl :Git pull 
-" nnoremap <leader>ggp :Git push 
-" --oneline
-" --graph
-" nnoremap <leader>gl :Git log 
-" nnoremap <leader>gb :Git blame  
-" nnoremap <leader>grm :Git rm 
-" nnoremap <leader>gmv :Git rm 
 
 " 标签闭合
 Plug 'alvan/vim-closetag'
@@ -398,8 +337,6 @@ let g:fzf_action = {
 let g:fzf_colors =
   \ { 'fg':   ['fg', 'Comment'],
   \   'border': ['fg', 'Normal']}
-" find File
-" map <leader>ff :Files<CR>
 " find Context
 map <leader>rg :Rg<CR>
 " 显示Buffers列表，替换原有方式
@@ -409,6 +346,7 @@ map <leader>fl :Lines<CR>
 " find git log
 map <leader>gl :Commits<CR>
 
+" 文件搜索
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 nnoremap  <leader>ff  :Telescope find_files <cr> 
@@ -465,15 +403,6 @@ let g:VM_maps["Add Cursor Down"] = '<c-z>'
 " 光标向上移动
 let g:VM_maps["Add Cursor Up"] = '<c-x>'
 
-" " 缩进显示
-" Plug 'nathanaelkane/vim-indent-guides'
-" " let g:indent_guides_enable_on_vim_startup = 1
-" " 自定义颜色
-" let g:indent_guides_guide_size = 1
-" let g:indent_guides_start_level = 2
-" " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=237
-" " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=236
-
 " 标签
 " ma  标记为a
 " dma 删除标记a
@@ -499,48 +428,89 @@ autocmd VimLeave * wshada!
 " git 分支
 Plug 'itchyny/vim-gitbranch'
 
-" 开启屏幕首页
-Plug 'mhinz/vim-startify'
-" 添加git中为上传的文件列表
-function! s:gitModified()
-    let files = systemlist('git ls-files -m 2>/dev/null')
-    return map(files, "{'line': v:val, 'path': v:val}")
-endfunction
-" same as above, but show untracked files, honouring .gitignore
-function! s:gitUntracked()
-    let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
-    return map(files, "{'line': v:val, 'path': v:val}")
-endfunction
-function! s:nerdtreeBookmarks()
-    let bookmarks = systemlist("cut -d' ' -f 2- ~/.NERDTreeBookmarks")
-    let bookmarks = bookmarks[0:-2] " Slices an empty last line
-    return map(bookmarks, "{'line': v:val, 'path': v:val}")
-endfunction
-function! GetUniqueSessionName()
-  let path = fnamemodify(getcwd(), ':~:t')
-  let path = empty(path) ? 'no-project' : path
-  let branch = gitbranch#name()
-  let branch = empty(branch) ? '' : '-' . branch
-  return substitute(path . branch, '/', '-', 'g')
-endfunction
-let g:startify_lists = [
-        \ { 'type': 'dir',       'header': ['🗒️  '. getcwd()] },
-        \ { 'type': 'files',     'header': ['🗂️  ']            },
-        \ { 'type': function('s:nerdtreeBookmarks'), 'header': ['🔖 ']},
-        \ { 'type': function('s:gitModified'),  'header': ['⁉️  git modified']},
-        \ { 'type': function('s:gitUntracked'), 'header': ['🚫 git untracked']},
-        \ { 'type': 'commands',  'header': ['Commands']       },
-        \ { 'type': 'sessions',  'header': ['Sessions']       },
-        \ ]
-let g:startify_custom_footer = [
-        \'      ________ ________  ________  ________   ___  __       ',
-        \'     |\  _____\\   __  \|\   __  \|\   ___  \|\  \|\  \     ',
-        \'     \ \  \__/\ \  \|\  \ \  \|\  \ \  \\ \  \ \  \/  /|_   ',
-        \'      \ \   __\\ \   _  _\ \   __  \ \  \\ \  \ \   ___  \  ',
-        \'       \ \  \_| \ \  \\  \\ \  \ \  \ \  \\ \  \ \  \\ \  \ ',
-        \'        \ \__\   \ \__\\ _\\ \__\ \__\ \__\\ \__\ \__\\ \__\',
-        \'         \|__|    \|__|\|__|\|__|\|__|\|__| \|__|\|__| \|__|',
-        \ ]
+" " 开启屏幕首页
+" Plug 'mhinz/vim-startify'
+" " 添加git中为上传的文件列表
+" function! s:gitModified()
+"     let files = systemlist('git ls-files -m 2>/dev/null')
+"     return map(files, "{'line': v:val, 'path': v:val}")
+" endfunction
+" " same as above, but show untracked files, honouring .gitignore
+" function! s:gitUntracked()
+"     let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+"     return map(files, "{'line': v:val, 'path': v:val}")
+" endfunction
+" function! s:nerdtreeBookmarks()
+"     let bookmarks = systemlist("cut -d' ' -f 2- ~/.NERDTreeBookmarks")
+"     let bookmarks = bookmarks[0:-2] " Slices an empty last line
+"     return map(bookmarks, "{'line': v:val, 'path': v:val}")
+" endfunction
+" function! GetUniqueSessionName()
+"   let path = fnamemodify(getcwd(), ':~:t')
+"   let path = empty(path) ? 'no-project' : path
+"   let branch = gitbranch#name()
+"   let branch = empty(branch) ? '' : '-' . branch
+"   return substitute(path . branch, '/', '-', 'g')
+" endfunction
+" let g:startify_lists = [
+"         \ { 'type': 'dir',       'header': ['🗒️  '. getcwd()] },
+"         \ { 'type': 'files',     'header': ['🗂️  ']            },
+"         \ { 'type': function('s:nerdtreeBookmarks'), 'header': ['🔖 ']},
+"         \ { 'type': function('s:gitModified'),  'header': ['⁉️  git modified']},
+"         \ { 'type': function('s:gitUntracked'), 'header': ['🚫 git untracked']},
+"         \ { 'type': 'commands',  'header': ['Commands']       },
+"         \ { 'type': 'sessions',  'header': ['Sessions']       },
+"         \ ]
+" let g:startify_custom_footer = [
+"         \'      ________ ________  ________  ________   ___  __       ',
+"         \'     |\  _____\\   __  \|\   __  \|\   ___  \|\  \|\  \     ',
+"         \'     \ \  \__/\ \  \|\  \ \  \|\  \ \  \\ \  \ \  \/  /|_   ',
+"         \'      \ \   __\\ \   _  _\ \   __  \ \  \\ \  \ \   ___  \  ',
+"         \'       \ \  \_| \ \  \\  \\ \  \ \  \ \  \\ \  \ \  \\ \  \ ',
+"         \'        \ \__\   \ \__\\ _\\ \__\ \__\ \__\\ \__\ \__\\ \__\',
+"         \'         \|__|    \|__|\|__|\|__|\|__|\|__| \|__|\|__| \|__|',
+"         \ ]
+
+Plug 'glepnir/dashboard-nvim'
+let g:dashboard_default_executive ='fzf'
+let g:dashboard_custom_section = {
+  \ 'a': { 'description': ['  new file         [1]'], 'command': 'DashboardNewFile'},
+  \ 'b': { 'description': ['  Find File        [2]'], 'command': 'DashboardFindFile'},
+  \ 'c': { 'description': ['  Find Word        [3]'], 'command': 'DashboardFindWord'},
+  \ 'd': { 'description': ['  Find History     [4]'], 'command': 'DashboardFindHistory'},
+  \ 'e': { 'description': ['  DataBase UI      [5]'], 'command': 'DBUI'},
+  \ 'exit': { 'description': ['  Exit             [q]'], 'command': 'exit'},
+  \ }
+
+nnoremap <silent> 1 :DashboardNewFile<CR>
+nnoremap <silent> 2 :DashboardFindFile<CR>
+nnoremap <silent> 3 :DashboardFindWord<CR>
+nnoremap <silent> 4 :DashboardFindHistory<CR>
+nnoremap <silent> 5 :DBUI<CR>
+" nnoremap <silent> q :q<CR>
+
+let g:dashboard_custom_header=[
+\ '',
+\ '',
+\ '',
+\ '',
+\ '                                       🤙🤙🤙',
+\ '  ┏┅┅┅ Hello 🤣😉🤩🤑🤤┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┓',
+\ '  ┇  ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗  ┇',
+\ '  ┇  ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║  ┇',
+\ '  ┇  ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║  ┇',
+\ '  ┇  ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║  ┇',
+\ '  ┇  ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║  ┇',
+\ '  ┇  ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝  ┇',
+\ '  ┗┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅┅💰💰💰 Yang ┅┅┅┛',
+\ '           🧘🧘🧘          ',
+\ '',
+\ '',
+\ '',
+\ '',
+\ '',
+\]
+
 
 " 文件操作历史记录
 Plug 'mbbill/undotree'
@@ -764,52 +734,91 @@ au FileType plantuml let g:plantuml_previewer#plantuml_jar_path = get(
 " V + S<p>  整段添加
 Plug 'tpope/vim-surround'
 
+" 中文帮助菜单
+Plug 'yianwillis/vimcdoc'
+
+" 数据库
+" DBUI
+" o / - 打开/切换抽屉选项 ( <Plug>(DBUI_SelectLine))
+" S - 在垂直分割中打开 ( <Plug>(DBUI_SelectLineVsplit))
+" d - 删除缓冲区或保存的 sql ( <Plug>(DBUI_DeleteLine))
+" R - 重绘 ( <Plug>(DBUI_Redraw))
+" A - 添加连接 ( <Plug>(DBUI_AddConnection))
+" H - 切换数据库详细信息 ( <Plug>(DBUI_ToggleDetails))
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
+let g:db_ui_use_nerd_fonts=1
+let g:db_ui_icons = {
+    \ 'expanded': '▾',
+    \ 'collapsed': '▸',
+    \ 'saved_query': '*',
+    \ 'new_query': '+',
+    \ 'tables': '~',
+    \ 'buffers': '»',
+    \ 'connection_ok': '✓',
+    \ 'connection_error': '✕',
+    \ }
+nnoremap <F5> <esc>:DBUI<CR>
+
+" 函数范插件
+Plug 'yaocccc/nvim-hlchunk'
+" 支持哪些文件 默认为 '*.ts,*.js,*.json,*.go,*.c'
+  let g:hlchunk_files = '*.ts,*.js,*.json,*.go,*.c,*.rs'
+" 缩进线的高亮
+  au VimEnter * hi HLIndentLine ctermfg=244
+" 延时 默认为50
+  let g:hlchunk_time_delay = 50
+" 高亮线符号(逆时针) 默认为 ['─', '─', '╭', '│', '╰', '─', '>']
+  let g:hlchunk_chars=['─', '─', '╭', '│', '╰', '─', '>']
+" 最大支持行数 默认3000(超过5000行的文件不使用hlchunk)
+  let g:hlchunk_line_limit = 5000
+" 最大支持列数 默认100(超过500列的文件不使用hlchunk)
+  let g:hlchunk_col_limit = 500
+
+" 高亮关键词，代替传统*
+Plug 'lfv89/vim-interestingwords'
+let g:interestingWordsDefaultMappings = 0
+" 开启高亮
+nnoremap <silent> * :call InterestingWords('n')<cr>
+vnoremap <silent> * :call InterestingWords('v')<cr>
+" 清除所有高亮
+nnoremap <silent> <leader>k :call UncolorAllWords()<cr>
+
+" 上/下一个
+nnoremap <silent> n :call WordNavigation(1)<cr>
+nnoremap <silent> N :call WordNavigation(0)<cr>
+
 Plug 'neoclide/coc.nvim'
 
 " coc用
 set shortmess+=c
-" tab向下查询，s-tab向上
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-" Use <c-space> to trigger completion.
+" 使用 <c-space> 弹出
 " if has('nvim')
 "   inoremap <silent><expr> <c-space> coc#refresh()
 " else
 "   inoremap <silent><expr> <c-@> coc#refresh()
 " endif
 
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
 " 回车确认功能项
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+"  `[g` and `]g` 
 " 错误诊断
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-" GoTo code navigation.
 " 定义跳转
 nmap <silent> gd <Plug>(coc-definition)
+" 定义列表
 nmap <silent> gy <Plug>(coc-type-definition)
-" 实现跳转
+" 实现列表
 nmap <silent> gi <Plug>(coc-implementation)
 " 参考
 nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window.
-" K 查看类型详情
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" ''双击 查看类型详情
+nnoremap <silent> '' :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -821,17 +830,12 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
 " 重命名
 nmap <leader>rn <Plug>(coc-rename)
 
-" Formatting selected code.
 " 格式化选中代码
-" xmap <leader>f  <Plug>(coc-format-selected)
-" nmap <leader>f  <Plug>(coc-format-selected)
+xmap <F9> <Plug>(coc-format-selected)
+nmap <F9> <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -841,31 +845,32 @@ augroup mygroup
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-" xmap <leader>a  <Plug>(coc-codeaction-selected)
-" nmap <leader>a  <Plug>(coc-codeaction-selected)
+" 代码独立为函数
+" <leader> + aap
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" Remap keys for applying codeAction to the current buffer.
-" nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-" nmap <leader>qf  <Plug>(coc-fix-current)
+" 当前buff下的问题显示.
+nmap <F10>  <Plug>(coc-codeaction)
+" 代码修复.
+nmap <F12>  <Plug>(coc-fix-current)
 
 " Run the Code Lens action on the current line.
 " nmap <leader>cl  <Plug>(coc-codelens-action)
 
-" Map function and class text objects
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-" xmap if <Plug>(coc-funcobj-i)
-" omap if <Plug>(coc-funcobj-i)
-" xmap af <Plug>(coc-funcobj-a)
-" omap af <Plug>(coc-funcobj-a)
-" xmap ic <Plug>(coc-classobj-i)
-" omap ic <Plug>(coc-classobj-i)
-" xmap ac <Plug>(coc-classobj-a)
-" omap ac <Plug>(coc-classobj-a)
+" 对象全包
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+" 函数全包
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
 
 " Remap <C-f> and <C-b> for scroll float windows/popups.
+" 屏幕滑动
 " if has('nvim-0.4.0') || has('patch-8.2.0750')
 "   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
 "   nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
@@ -889,12 +894,13 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
 
+" 状态栏，添加airline
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-" Mappings for CoCList
+" coclist 功能项列表
 " Show all diagnostics.
 " nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
 " " Manage extensions.
@@ -912,6 +918,48 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 " " Resume latest coc list.
 " nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+" ----- coc 其他插件的配置
+
+" coc-highlight 插件高亮显示.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" coc-prettier 配置
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" coc-snippets
+" C-n/p 上选项，<tab>完成选项
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+let g:coc_snippet_next = '<tab>'
+" 使用leader x 打开 snippets 列表
+map <leader>x <esc>:CocList snippets<CR>
+map <leader>X <esc>:CocCommand snippets.editSnippets<CR>
+
+" coc-git
+" :CocCommand git.copyUrl将当前行的 url 复制到剪贴板
+" :CocCommand git.chunkInfo在光标下显示区块信息。
+" :CocCommand git.chunkUndo撤消当前块。
+" :CocCommand git.chunkStage阶段当前块。
+" :CocCommand git.chunkUnstage取消暂存包含当前行的块。
+" :CocCommand git.diffCached在预览窗口中显示缓存的差异。
+" :CocCommand git.showCommit显示当前块的提交。
+" :CocCommand git.browserOpen在浏览器中打开当前行
+" :CocCommand git.foldUnchanged折叠当前缓冲区的未更改行。
+" :CocCommand git.push将当前分支的代码推送到远程。
+" :CocCommand git.toggleGutters在符号列中切换 git gutters。
+nnoremap [p <esc>:CocCommand git.chunkInfo<CR>
+nnoremap [d <esc>:CocCommand git.diffCached<CR>
+nnoremap [c <esc>:CocCommand git.showCommit<CR>
 
 call plug#end()
 
+
+source ~/.config/nvim/db.vim
